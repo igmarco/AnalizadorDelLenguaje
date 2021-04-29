@@ -80,4 +80,55 @@ public abstract class AutomataFinito {
         
     }
     
+    /**
+     * Marca como final el estado pasado por parámetro asignado true en el vector de booleanos
+     * @param estado Representa el estado que se decidirá como final. 
+     */
+    public void marcarFinal(int estado){
+        
+        this.finales[estado]=true;
+        
+    }
+    
+    /**
+     * Asigna el vector de booleanos al atributo finales del autómata.
+     * @param estadosFinales Representa el vector de estados finales y no finales para asignarselo al autómata.
+     */
+    public void setFinales(boolean[] estadosFinales){
+        
+        this.finales=estadosFinales;
+        
+    }
+    
+    /**
+     * Devuelve el numero de Estados del automáta
+     * @return número de estados del autómata
+     */
+    public int getNumEstados(){
+        
+        return this.numEstados;
+        
+    }
+    
+    /**
+     * Devuelve el vector con los estados finales y no finales del automata
+     * @return Vector de booleanos que representa los estados finales.
+     */
+    public boolean[] getFinales(){
+        
+        return this.finales;
+        
+    }
+    
+    /**
+     * Devuelve cierto si el estado pasado por parametros es final y falso en caso contrario
+     * @param estado Representa el estado para determinar si es o no final.
+     * @return Booleano que representa si el estado pasado por parametros es o no final.
+     */
+    public boolean esEstadoFinal(int estado){
+        
+        return this.finales[estado];
+        
+    }
+    
 }

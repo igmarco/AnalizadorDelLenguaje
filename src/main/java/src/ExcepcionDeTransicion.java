@@ -6,9 +6,16 @@
 package src;
 
 /**
- *
+ *Esta clase define una excpecion personalizada en el caso en el que una transicion falle
  * @author paascorb
  */
 public class ExcepcionDeTransicion extends Exception{
+    
+    /**
+     * Constructor de la excepción mostrando un mensaje indicando que ha fallado la transición.
+     */
+    public ExcepcionDeTransicion(){
+        super("ExcepcionDeTransicion: Error al transicionar al siguiente estado.");
+    }
     
 }
