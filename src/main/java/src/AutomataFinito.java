@@ -6,7 +6,7 @@
 package src;
 
 /**
- *Esta clase define el concepto de automata reconocedor de un lenguaje L3, es decir, un autómata finito.
+ *Esta clase define el concepto de autómata reconocedor de un lenguaje L3, es decir, un autómata finito.
  * @author paascorb
  */
 public abstract class AutomataFinito {
@@ -16,7 +16,7 @@ public abstract class AutomataFinito {
     private int tamAlfabeto;
      
     /**
-     * Constructor del automata finito, sin estados finales.
+     * Constructor del autómata finito, sin estados finales.
      * @param num El parámetro num define el numero de estados del autómata
      * @param nAlfabeto El parámetro nAlfabeto define el número de caracteres del alfabeto
      */
@@ -26,9 +26,9 @@ public abstract class AutomataFinito {
     }
     
     /**
-     * Constructor del automata finito, con estados finales.
+     * Constructor del autómata finito, con estados finales.
      * @param num El parámetro num define el numero de estados del autómata
-     * @param nAlfabeto El parámetro nAlfabeto define el número de caracteres del alfabeto
+     * @param nAlfabeto El parámetro nAlfabeto define el número de carácteres del alfabeto
      * @param finales El parárametro finales define un vector de booleanos donde cada posición refiere a un estado y si es true es porque ese estado será final, false en caso contrario.
      */
     public AutomataFinito (int num, int nAlfabeto, boolean [] finales){
@@ -38,7 +38,7 @@ public abstract class AutomataFinito {
     }
     
     /**
-     * Metodo transicion que devuelve el estado al que transicionará estando en el estado pasado por parámetro y recibiendo la letra pasada por parametros.
+     * Método transición que devuelve el estado al que transicionará estando en el estado pasado por parámetro y recibiendo la letra pasada por parametros.
      * @param estado El parámetro estado define el estado en el que se encuentra el autómata
      * @param letra El parámetro letra define la letra que consume el autómata y con la cual transicionará
      * @return Devolverá un entero que refiere al estado al que transicionará.
@@ -46,13 +46,13 @@ public abstract class AutomataFinito {
     public abstract int transicion (int estado, int letra);
     
     /**
-     * Metodo transicion que fija el estado en el que se encuentra el autómata al que transicionará recibiendo la letra pasada por parametros y estando en el estado en el que se encuentre el autómata.
+     * Método transicion que fija el estado en el que se encuentra el autómata al que transicionará recibiendo la letra pasada por parámetros y estando en el estado en el que se encuentre el autómata.
      * @param letra El parámetro letra define la letra que consume el autómata y con la cual transicionará
      */
     public abstract void transicion (int letra);
     
     /**
-     * Metodo cierre que devuelve el estado en el que se encontrará el autómata cuando consuma toda la cadena desde el estado pasado por parametros.
+     * Método cierre que devuelve el estado en el que se encontrará el autómata cuando consuma toda la cadena desde el estado pasado por parámetros.
      * @param estado El parámetro estado define el estado en el que se encontrará el autómata
      * @param cadena El parámetro cadena define la cadena a consumir por el autómata para realizar el cierre.
      * @return  Devuelve un entero que refiere al estado en el que se encontrará al consumir la cadena.
@@ -70,7 +70,7 @@ public abstract class AutomataFinito {
     }
     
     /**
-     * Metodo perteneLenguaje devuelve si la cadena pasada por parámetros al ser consumida el estado en el que se encuentra el autómata es final.
+     * Método perteneLenguaje devuelve si la cadena pasada por parámetros, al ser consumida, el estado en el que se encuentra el autómata es final.
      * @param cadena El parámetro cadena define la cadena que debe consumir el autómata para comprobar si pertenece o no al lenguaje.
      * @return Devuelve el booleano que será true si la cadena pertence al lenguaje o false en caso contrario.
      */
@@ -101,7 +101,7 @@ public abstract class AutomataFinito {
     }
     
     /**
-     * Devuelve el numero de Estados del automáta
+     * Devuelve el numero de Estados del autómata
      * @return número de estados del autómata
      */
     public int getNumEstados(){
@@ -111,7 +111,7 @@ public abstract class AutomataFinito {
     }
     
     /**
-     * Devuelve el vector con los estados finales y no finales del automata
+     * Devuelve el vector con los estados finales y no finales del autómata
      * @return Vector de booleanos que representa los estados finales.
      */
     public boolean[] getFinales(){

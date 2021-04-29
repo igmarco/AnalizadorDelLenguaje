@@ -6,7 +6,8 @@
 package src;
 
 /**
- *Particularización del automata finito usando una matriz para definir sus transiciones.
+ *Particularización del automata finito usando una matriz para definir sus transiciones. Modo Imperativo.
+ * Si deseasemos hacerlo más orientado a objetos, deberiamos tener un atributo estado actual, y el método transicion seria ligeramente distinto.
  * @author paascorb
  */
 public class AutomataFinitoMatriz extends AutomataFinito{
@@ -37,18 +38,18 @@ public class AutomataFinitoMatriz extends AutomataFinito{
     }
     
     /**
-     * Metodo de transicion del automata finito matriz, devulve el estado al que transicionará el autómata con el estado y letra pasados por parametros.
+     * Metodo de transición del automata finito matriz, devulve el estado al que transicionará el autómata con el estado y letra pasados por parámetros.
      * @param estado El parámetro estado define el estado en el que se encuentra el autómata
      * @param letra El parámetro letra define la letra que consume el autómata y con la cual transicionará
      * @return Devolverá un entero que refiere al estado al que transicionará.
      */
     @Override
     public int transicion(int estado, int letra) {
-            return this.matriz[estado][letra];
+            return this.matriz[letra][estado];
     }
     
     /**
-     * En este caso este metodo no queda redefinido porque no nos interesa.
+     * Este sería el método que habría que definir en caso de que nuestro autómata estuviese más orientado a objetos.
      */
     public void transicion(int letra){}
     

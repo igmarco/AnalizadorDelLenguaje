@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *Esta clase representa el analizador léxico, que contiene los método necesarios para realizar el análisis léxico de una cadena
+ *Clase que representa el analizador léxico, que contiene los método necesarios para realizar el análisis léxico de una cadena
  * @author paascorb
  */
 public class AnalizadorLéxico {
@@ -24,7 +24,7 @@ public class AnalizadorLéxico {
     private List<Token> historico;
     
     /**
-     * Este es el constructor de AnalizadorLéxico que inicializa los atributos cadena, automata y tokens pasados por parametros, luego el historico y posActual lo inicializa con su valor inicial.
+     * Constructor de AnalizadorLéxico que inicializa los atributos cadena, automata y tokens pasados por parametros, luego el historico y posActual lo inicializa con su valor inicial.
      * @param cadena Es el parámetro que representa através de un vector de enteros la cadena a analizar.
      * @param automata Es el automata finito que se utilizará para realizar el analisis léxico
      * @param tokens Es la tabla que para cada clave indica el valor del token.
@@ -56,7 +56,8 @@ public class AnalizadorLéxico {
         while(pos < this.cadena.length && estadoInicial != -1){
             
             estadoInicial = automata.transicion(cadena[pos], estadoInicial);
-            if(automata.esEstadoFinal(estadoInicial)){
+            
+            if(estadoInicial != -1 && automata.esEstadoFinal(estadoInicial)){
                 ultimoFinal = estadoInicial;
                 posFinal = pos;
             }
@@ -86,8 +87,8 @@ public class AnalizadorLéxico {
     }
     
     /**
-     * Metodo que comprueba si en la cadena restante desde la posicion posActual quedan más tokens
-     * @return Devuelve el booleano correspondiente a si existen más tokens o si ha finalizado.
+     * Metodo que comprueba si en la cadena restante desde la posición posActual quedan más tokens
+     * @return Devuelve el booleano correspondiente a si existen más tokens o en caso contrario ya no se pueden obtener más.
      */
     public boolean hasMoreTokens(){
         
@@ -100,7 +101,8 @@ public class AnalizadorLéxico {
         while(pos < this.cadena.length && estadoInicial != -1){
             
             estadoInicial = automata.transicion(cadena[pos], estadoInicial);
-            if(automata.esEstadoFinal(estadoInicial)){
+            
+            if(estadoInicial != -1 && automata.esEstadoFinal(estadoInicial)){
                 ultimoFinal = estadoInicial;
                 posFinal = pos;
             }
@@ -123,7 +125,7 @@ public class AnalizadorLéxico {
     } 
     
     /**
-     * Reinicia el analisis reseteando el historico y la posicion desde la que se analiza.
+     * Reinicia el analisis reiniciando el historico y la posición desde la que se analiza.
      */
     public void reiniciar(){
         
@@ -133,7 +135,7 @@ public class AnalizadorLéxico {
     }
     
     /**
-     * Reinicia el analizador y actualiza la cadena a actualizar por la nueva que es pasada por parametro.
+     * Reinicia el analizador y actualiza la cadena por la nueva que es pasada por parámetro.
      * @param cadena Representa la nueva cadena a analizar por el analizador.
      */
     public void setCadena(int[] cadena){
@@ -145,13 +147,13 @@ public class AnalizadorLéxico {
     }
     
     /**
-     * Metodo que finaliza directamente el análisis, comprobando que se puedan generar más tokens y si es asi generarlos.
+     * Método que finaliza directamente el análisis, comprobando que se puedan generar más tokens y si es asi generarlos.
      */
     public void finalizarAnálisis(){
         
         try{
             while(this.hasMoreTokens()){
-                this.nextToken();
+                this.historico.add(this.nextToken());
             }
         } catch (ExcepcionDeTransicion ex) {
             Logger.getLogger(AnalizadorLéxico.class.getName()).log(Level.SEVERE, null, ex);

@@ -6,7 +6,7 @@
 package src;
 
 /**
- *Esta clase define una excpecion personalizada en el caso en el que una transicion falle
+ *Esta clase define una excepción personalizada en el caso en el que una transición falle
  * @author paascorb
  */
 public class ExcepcionDeTransicion extends Exception{
