@@ -1,23 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package src;
+package AnaLex;
 
 /**
  *Clase token que define el par identificador de token y lexema asociado a dicho identificador.
  * @author paascorb
  */
+
+/**
+* La clase Token representa una dupla token-lexema de un analizador léxico.
+* Parte de la práctica 4 de la asignatura Procesadores de Lenguajes. 
+* @author paascorb
+* @author igmarco
+* @version V1 - 22/04/2021
+* @see <a href="https://aps.unirioja.es/GuiasDocentes/servlet/agetguiahtml?2020-21,801G,445">Guía de la Asignatura: Procesadores de Lenguajes.</a> 
+* @see AnalizadorLexico
+*/
 public class Token {
     
     private String idToken;
     private int[] lexema;
     
     /**
-     * Constructor de la clase token, recibe el identificador del token y el lexema asociado.
-     * @param idTok El parámetro idTok define el identificador del token
-     * @param lexema El parámetro lexema refiere el lexema asociado al token.
+     * Constructor de la clase Token, recibe el identificador del token y el lexema asociado.
+     * @param idTok Representa el nombre o identificador del Token.
+     * @param lexema Representa el lexema del token, la cadena de letras que lo conforman.
      */
     public Token(String idTok, int[] lexema){
         
@@ -27,23 +32,24 @@ public class Token {
     }
     
     /**
-     * Es el método get del atributo idToken.
-     * @return devuelve el atributo idToken.
+     * Método que devuelve el nombre o id del Token.
+     * @return Nombre o id del Token.
      */
     public String getId(){
         return this.idToken;
     }
     
     /**
-     * Es el método get del atributo lexema
-     * @return devuelve el atributo lexema. 
+     * Método que devuelve el lexema del token, la cadena de letras que lo conforman.
+     * @return Lexema del token, la cadena de letras que lo conforman.
      */
     public int [] getLexema(){
         return this.lexema;
     }
     
     /**
-     * Redefinición del metodo toString para Token.
+     * Redefinición del método toString para Token.
+     * @deprecated
      * @return Devuelve una cadena donde se documenta el identificador del token y su lexema asociado.
      */
     public String toString(){
@@ -54,7 +60,8 @@ public class Token {
     }
     
     /**
-     * Método que transforma el vector de enteros en el que está representado el lexema a una cadena tranformando los enteros a sus correspondientes caracteres en minúsculas [a-z]
+     * Método que transforma el vector de enteros en el que está representado el lexema a una cadena, tranformando los enteros a sus correspondientes caracteres en minúsculas [a-z].
+     * @deprecated
      * @param lexema Vector de enteros que reprenta al lexema.
      * @return  Cadena transformada a partir del vector de enteros.
      */
