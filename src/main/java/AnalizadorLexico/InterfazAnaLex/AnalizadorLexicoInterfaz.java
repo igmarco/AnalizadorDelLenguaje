@@ -18,6 +18,10 @@ import AnalizadorLexico.AnaLex.AutomataFinito;
 import AnalizadorLexico.AnaLex.AutomataFinitoMatriz;
 import AnalizadorLexico.AnaLex.ExcepcionDeTransicion;
 import AnalizadorLexico.AnaLex.Tools;
+import javax.swing.ImageIcon;
+import java.awt.Toolkit;
+import java.awt.Color;
+import java.awt.Font;
 
 /**
 * Interfaz gráfica para el proyecto AnalizadorLéxico. Proporciona una forma de probar analizadores léxicos generalizada.
@@ -39,7 +43,6 @@ public class AnalizadorLexicoInterfaz {
 	
 	AnalizadorLexico AL;
 	
-	AutomataFinito AF;
 	Map<Integer, String> equivTokens;
 	
 	String cadenaActual;
@@ -81,8 +84,7 @@ public class AnalizadorLexicoInterfaz {
 	private void initialize() {
 		
 		AL = null;
-		
-		AF = new AutomataFinitoMatriz(0, 0);
+	
 		equivTokens = new HashMap<>();
 		
 		cadenaActual = null;
@@ -91,12 +93,18 @@ public class AnalizadorLexicoInterfaz {
 		equivTokensInformado = false;
 		
 		frmAnalizadorLxico = new JFrame();
+		frmAnalizadorLxico.getContentPane().setBackground(new Color(102, 153, 204));
+		frmAnalizadorLxico.setResizable(false);
+		frmAnalizadorLxico.getContentPane().setForeground(new Color(0, 0, 0));
+		frmAnalizadorLxico.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\pablo\\OneDrive\\Escritorio\\AnalizadorDelLenguaje\\Recursos\\iCono.png"));
 		frmAnalizadorLxico.setTitle("Analizador L\u00E9xico");
-		frmAnalizadorLxico.setBounds(100, 100, 683, 469);
+		frmAnalizadorLxico.setBounds(100, 100, 666, 573);
 		frmAnalizadorLxico.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmAnalizadorLxico.getContentPane().setLayout(null);
 		
 		btnNewButton = new JButton("Siguiente Token");
+		btnNewButton.setFont(new Font("Consolas", Font.PLAIN, 11));
+		btnNewButton.setBackground(new Color(255, 239, 213));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -105,10 +113,12 @@ public class AnalizadorLexicoInterfaz {
 			}
 		});
 		btnNewButton.setEnabled(false);
-		btnNewButton.setBounds(39, 366, 165, 53);
+		btnNewButton.setBounds(10, 470, 165, 53);
 		frmAnalizadorLxico.getContentPane().add(btnNewButton);
 		
 		btnSiguiente = new JButton("Completar An\u00E1lisis");
+		btnSiguiente.setFont(new Font("Consolas", Font.PLAIN, 11));
+		btnSiguiente.setBackground(new Color(255, 239, 213));
 		btnSiguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -117,61 +127,44 @@ public class AnalizadorLexicoInterfaz {
 			}
 		});
 		btnSiguiente.setEnabled(false);
-		btnSiguiente.setBounds(252, 366, 165, 53);
+		btnSiguiente.setBounds(241, 470, 165, 53);
 		frmAnalizadorLxico.getContentPane().add(btnSiguiente);
 		
 		textField = new JTextField();
-		textField.setBounds(10, 101, 647, 50);
+		textField.setFont(new Font("Consolas", Font.PLAIN, 13));
+		textField.setBounds(10, 201, 647, 50);
 		frmAnalizadorLxico.getContentPane().add(textField);
 		textField.setColumns(10);
 		
 		textArea = new JTextArea();
-		textArea.setBounds(10, 187, 647, 168);
+		textArea.setEditable(false);
+		textArea.setBounds(10, 283, 647, 168);
 		frmAnalizadorLxico.getContentPane().add(textArea);
 		
 		JLabel lblNewLabel = new JLabel("Cadena:");
-		lblNewLabel.setBounds(10, 76, 46, 14);
+		lblNewLabel.setBounds(10, 176, 46, 14);
 		frmAnalizadorLxico.getContentPane().add(lblNewLabel);
 		
 		JLabel lblTokens = new JLabel("Tokens:");
-		lblTokens.setBounds(10, 162, 46, 14);
+		lblTokens.setBounds(10, 258, 46, 14);
 		frmAnalizadorLxico.getContentPane().add(lblTokens);
 		
-		JButton btnIndicar = new JButton("Indicar Tokens");
+		JButton btnIndicar = new JButton("Nuevo Analizador");
+		btnIndicar.setFont(new Font("Consolas", Font.BOLD, 15));
+		btnIndicar.setBackground(new Color(255, 204, 153));
 		btnIndicar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				clickTokenEstado(equivTokens);
+				clickNuevoAnalizador();
 				
 			}
 		});
-		btnIndicar.setBounds(39, 11, 165, 54);
+		btnIndicar.setBounds(10, 111, 315, 54);
 		frmAnalizadorLxico.getContentPane().add(btnIndicar);
 		
-		JButton btnNewButton_1_1 = new JButton("Definir Aut\u00F3mata");
-		btnNewButton_1_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				clickDefinirAutomata(AF);
-				
-			}
-		});
-		btnNewButton_1_1.setBounds(252, 11, 165, 54);
-		frmAnalizadorLxico.getContentPane().add(btnNewButton_1_1);
-		
-		construir = new JButton("Construir Analizador");
-		construir.setEnabled(false);
-		construir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				comenzamosConElAnalizador();
-				
-			}
-		});
-		construir.setBounds(465, 11, 165, 54);
-		frmAnalizadorLxico.getContentPane().add(construir);
-		
 		JButton btnSalir = new JButton("Salir");
+		btnSalir.setFont(new Font("Consolas", Font.BOLD, 13));
+		btnSalir.setBackground(new Color(224, 255, 255));
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -179,47 +172,24 @@ public class AnalizadorLexicoInterfaz {
 				
 			}
 		});
-		btnSalir.setEnabled(false);
-		btnSalir.setBounds(465, 366, 165, 53);
+		btnSalir.setBounds(475, 470, 165, 53);
 		frmAnalizadorLxico.getContentPane().add(btnSalir);
-	}
-	
-	/**
-    * Se activa al hacer click en "Definir Autómata". Abre una ventana de diálogo en la que es posible introducir el autómata finito con el que trabajará el analizador léxico.
-    * En caso de que tanto el botón de "Definir Autómata" como el de "Indicar Tokens" hayan sido pulsados, activa el botón de "Construir Analizador".
-    * @param AF Autómata finito de la interfaz.
-    * @see AnaLex.DefinirAutomataDialogo
-    */
-	private void clickDefinirAutomata(AutomataFinito AF) {
 		
-		DefinirAutomataDialogo frame = new DefinirAutomataDialogo(AF, this);
-		frame.setVisible(true);
-		frame.setModal(true);
+		JLabel lblNewLabel_1 = new JLabel("New label");
+		lblNewLabel_1.setIcon(new ImageIcon("Recursos\\Nombre.png"));
+		lblNewLabel_1.setBounds(10, 11, 397, 84);
+		frmAnalizadorLxico.getContentPane().add(lblNewLabel_1);
 		
-//		AF = frame.getAF();
+		JLabel lblNewLabel_1_1 = new JLabel("New label");
+		lblNewLabel_1_1.setIcon(new ImageIcon("Recursos\\Logo.png"));
+		lblNewLabel_1_1.setBounds(437, 11, 203, 84);
+		frmAnalizadorLxico.getContentPane().add(lblNewLabel_1_1);
 		
-		automataFinitoInformado = true;
-		if(equivTokensInformado) construir.setEnabled(true);
-		
-	}
-	
-	/**
-    * Se activa al hacer click en "Indicar Tokens". Abre una ventana de diálogo en la que es posible introducir la correspondencia entre estados finales y tokens con la que trabajará el analizador léxico.
-    * En caso de que tanto el botón de "Definir Autómata" como el de "Indicar Tokens" hayan sido pulsados, activa el botón de "Construir Analizador".
-    * @param equivTokens Diccionario con la correspondencia de estados finales y tokens.
-    * @see DefinirEquivTokensDialogo
-    */
-	private void clickTokenEstado(Map<Integer, String> equivTokens) {
-		
-		DefinirEquivTokensDialogo frame = new DefinirEquivTokensDialogo(equivTokens, this);
-		frame.setVisible(true);
-		frame.setModal(true);
-		
-//		equivTokens = frame.getEquivTokens();
-		
-		equivTokensInformado= true;
-		if(automataFinitoInformado) construir.setEnabled(true);
-		
+		JButton btnModificarAnalizador = new JButton("Modificar Analizador");
+		btnModificarAnalizador.setFont(new Font("Consolas", Font.BOLD, 15));
+		btnModificarAnalizador.setBackground(new Color(255, 204, 153));
+		btnModificarAnalizador.setBounds(335, 111, 315, 54);
+		frmAnalizadorLxico.getContentPane().add(btnModificarAnalizador);
 	}
 	
 	/**
@@ -269,38 +239,14 @@ public class AnalizadorLexicoInterfaz {
 		
 	}
 	
-	/**
-    * Se activa al hacer click en "Construir Analizador". Crea el analizador léxico en base al autómata finito y al diccionario de estados finales y tokens introducidos en los diálogos.
-    * Habilita los botones "Siguiente Token" y "Completar Análisis".
-    * @see AnaLex.AnalizadorLexico
-    */
-	private void comenzamosConElAnalizador() {
-		
-		this.AL = new AnalizadorLexico(AF, equivTokens);
-		
-		btnNewButton.setEnabled(true);
-		btnSiguiente.setEnabled(true);
-		
+	public void DefinirAnalizador(AnalizadorLexico al) {
+		this.AL = al;
 	}
 	
-	/**
-    * Guarda el autómata finito informado en el atributo de la clase.
-    * @param AF Autómata finito.
-    * @see AutomataFinito
-    */
-	public void guardarAF(AutomataFinito AF) {
-		
-		this.AF = AF;
-		
-	}
-	
-	/**
-    * Guarda el diccionario de estados finales y tokens informado en el atributo de la clase.
-    * @param equivTokens Diccionario con la correspondencia de estados finales y tokens.
-    */
-	public void guardarEquivTokens(Map<Integer, String> equivTokens) {
-		
-		this.equivTokens = equivTokens;
-		
+	public void clickNuevoAnalizador() {
+		Creación cr = new Creación(this);
+		cr.setVisible(true);
+		this.btnNewButton.setEnabled(true);
+		this.btnSiguiente.setEnabled(true);
 	}
 }

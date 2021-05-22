@@ -13,19 +13,27 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Font;
 
 /**
-* Diálogo para la clase AnalizadorLexicoInterfaz. Proporciona una forma de definir las equivalencias entre estados finales y tokens.
-* Parte adicional de la práctica 4 de la asignatura Procesadores de Lenguajes. 
-* @author Ignacio Marco Pérez
-* @version V2 - 28/04/2021
-* @see <a href="https://aps.unirioja.es/GuiasDocentes/servlet/agetguiahtml?2020-21,801G,445">Guía de la Asignatura: Procesadores de Lenguajes.</a> 
-* @see AnalizadorLexicoInterfaz
-*/
+ * Diálogo para la clase AnalizadorLexicoInterfaz. Proporciona una forma de
+ * definir las equivalencias entre estados finales y tokens. Parte adicional de
+ * la práctica 4 de la asignatura Procesadores de Lenguajes.
+ * 
+ * @author Ignacio Marco Pérez
+ * @version V2 - 28/04/2021
+ * @see <a href=
+ *      "https://aps.unirioja.es/GuiasDocentes/servlet/agetguiahtml?2020-21,801G,445">Guía
+ *      de la Asignatura: Procesadores de Lenguajes.</a>
+ * @see AnalizadorLexicoInterfaz
+ */
 public class DefinirEquivTokensDialogo extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
+
+	int NúmeroEstados;
+	int NúmeroFinal = 0;
 
 //	/**
 //	 * Launch the application.
@@ -42,11 +50,17 @@ public class DefinirEquivTokensDialogo extends JDialog {
 
 	/**
 	 * Create the dialog.
-	 * @param equivTokens Diccionario con la correspondencia de estados finales y tokens. (Nota: Este atributo no sirve para nada.)
-	 * @param ali Interfaz del analizador léxico que genera el diálogo.
+	 * 
+	 * @param equivTokens Diccionario con la correspondencia de estados finales y
+	 *                    tokens. (Nota: Este atributo no sirve para nada.)
+	 * @param ali         Interfaz del analizador léxico que genera el diálogo.
 	 */
-	public DefinirEquivTokensDialogo(Map<Integer, String> equivTokens, AnalizadorLexicoInterfaz ali) {
-		
+	public DefinirEquivTokensDialogo(Map<Integer, String> equivTokens, Analizador ali, boolean[] finales) {
+
+		setResizable(false);
+
+		this.NúmeroEstados = finales.length;
+
 		setTitle("Equivalencia de estados finales - tokens");
 		setBounds(100, 100, 339, 422);
 		getContentPane().setLayout(new BorderLayout());
@@ -55,33 +69,19 @@ public class DefinirEquivTokensDialogo extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		{
 			table = new JTable();
-			table.setModel(new DefaultTableModel(
-				new Object[][] {
-					{"Estado", "Token"},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-				},
-				new String[] {
-					"New column", "New column"
+			table.setFont(new Font("Consolas", Font.PLAIN, 15));
+			table.setBounds(10, 11, 303, 16);
+			DefaultTableModel dtm = new DefaultTableModel(0, 0);
+			String header[] = new String[] { "Estado", "Token" };
+			dtm.setColumnIdentifiers(header);
+			table.setModel(dtm);
+			dtm.addRow(header);
+			for (int i = 0; i < NúmeroEstados; ++i) {
+				if (finales[i]) {
+					dtm.addRow(new Object[] { i + 1, null });
+					++this.NúmeroFinal;
 				}
-			));
+			}
 			contentPanel.add(table);
 		}
 		{
@@ -92,9 +92,10 @@ public class DefinirEquivTokensDialogo extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
+
 						construirEquivTokens(equivTokens, ali);
-						
+						dispose();
+
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -102,30 +103,37 @@ public class DefinirEquivTokensDialogo extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 		}
+
+		this.pack();
 	}
-	
+
 	/**
-    * Registra los datos introducidos por pantalla en el analizador léxico (interfaz).
-    * @param equivTokens Diccionario con la correspondencia de estados finales y tokens. (Nota: Este atributo no sirve para nada.)
-    * @param ali Interfaz del analizador léxico. Guardará el mapa de estados finales - tokens.
-    * @see AnalizadorLexicoInterfaz#guardarEquivTokens(Map)
-    */
-	private void construirEquivTokens(Map<Integer, String> equivTokens, AnalizadorLexicoInterfaz ali) {
-		
+	 * Registra los datos introducidos por pantalla en el analizador léxico
+	 * (interfaz).
+	 * 
+	 * @param equivTokens Diccionario con la correspondencia de estados finales y
+	 *                    tokens. (Nota: Este atributo no sirve para nada.)
+	 * @param ali         Interfaz del analizador léxico. Guardará el mapa de
+	 *                    estados finales - tokens.
+	 * @see AnalizadorLexicoInterfaz#guardarEquivTokens(Map)
+	 */
+	private void construirEquivTokens(Map<Integer, String> equivTokens, Analizador ali) {
+
 		equivTokens = new HashMap<>();
-		
-		for(int row = 1; row < 20; row++) {
-			
-			if(this.table.getModel().getValueAt(row, 0) != null && this.table.getModel().getValueAt(row, 1) != null) {
-				
-				equivTokens.put(Integer.parseInt((String) this.table.getModel().getValueAt(row, 0)), (String) this.table.getModel().getValueAt(row, 1));
-				
+
+		for (int row = 1; row < this.NúmeroFinal; row++) {
+
+			if (this.table.getModel().getValueAt(row, 0) != null && this.table.getValueAt(row, 1) != null) {
+				String string = (String) this.table.getValueAt(row, 0).toString();
+				Integer result = Integer.parseInt(string) -1;
+				equivTokens.put(result,(String) this.table.getModel().getValueAt(row, 1));
+
 			}
-			
+
 		}
-		
+
 		ali.guardarEquivTokens(equivTokens);
-		
+
 	}
 
 }
