@@ -1,22 +1,21 @@
 package AnalizadorLexico.InterfazAnaLex;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import java.awt.event.*;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import java.awt.GridLayout;
-import java.awt.Font;
-import javax.swing.JTextField;
-import java.awt.Color;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-
 import static javax.swing.JOptionPane.showMessageDialog;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Arrays;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 public class Creación extends JFrame {
 
@@ -88,8 +87,11 @@ public class Creación extends JFrame {
 						Estados = Integer.parseInt(tfEstados.getText());
 						
 						Simbolos = tfSimbolos.getText().split(",");
+						Arrays.sort(Simbolos);
 						
-						Analizador an = new Analizador(Estados, Simbolos, ali);
+						ali.setSimbolos(Simbolos);
+						
+						Analizador an = new Analizador(Estados, Simbolos, ali, true);
 						dispose();
 						an.setVisible(true);
 					}catch(NumberFormatException ex) {

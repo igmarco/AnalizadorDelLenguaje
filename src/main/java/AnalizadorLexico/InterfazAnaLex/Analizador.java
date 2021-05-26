@@ -30,19 +30,19 @@ public class Analizador extends JFrame {
 	AnalizadorLexicoInterfaz ali;
 
 	Map<Integer, String> equivTokens;
-	boolean equivTokensInformado;
-	boolean automataFinitoInformado;
+	
+	boolean equivTokensInformado, automataFinitoInformado, nuevo;
 
 	/**
 	 * Create the frame.
 	 */
-	public Analizador(int Estados, String[] Simbolos, AnalizadorLexicoInterfaz ali) {
+	public Analizador(int Estados, String[] Simbolos, AnalizadorLexicoInterfaz ali, boolean nuevo) {
 		
 		this.ali = ali;
 		AF = new AutomataFinitoMatriz(0, 0);
 		this.Estados = Estados;
 		this.Simbolos = Simbolos;
-		Arrays.sort(this.Simbolos);
+		this.nuevo = nuevo;
 
 		equivTokens = new HashMap<>();
 
@@ -58,7 +58,7 @@ public class Analizador extends JFrame {
 		btnTokens.setFont(new Font("Consolas", Font.BOLD, 11));
 		btnTokens.setForeground(Color.WHITE);
 		btnTokens.setBackground(new Color(102, 153, 204));
-		btnTokens.setEnabled(false);
+		btnTokens.setEnabled((nuevo ? false : true));
 		btnTokens.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -79,7 +79,7 @@ public class Analizador extends JFrame {
 				btnTokens.setEnabled(true);
 			}
 		});
-		btnFinales.setEnabled(false);
+		btnFinales.setEnabled((nuevo ? false : true));
 		btnFinales.setBounds(155, 32, 133, 54);
 		contentPane.add(btnFinales);
 
@@ -111,8 +111,15 @@ public class Analizador extends JFrame {
 	 * @see DefinirEquivTokensDialogo
 	 */
 	private void clickTokenEstado(Map<Integer, String> equivTokens) {
-
-		DefinirEquivTokensDialogo frame = new DefinirEquivTokensDialogo(equivTokens, this, this.finales);
+		
+		DefinirEquivTokensDialogo frame;
+		
+		if(nuevo)
+			frame = new DefinirEquivTokensDialogo(equivTokens, this, this.finales);
+		else
+			frame = new DefinirEquivTokensDialogo(equivTokens, this, this.ali.getAutomata().getFinalesBooleanList(), this.ali.getAnalizador().getTokens());
+			
+			
 		frame.setVisible(true);
 		frame.setModal(true);
 

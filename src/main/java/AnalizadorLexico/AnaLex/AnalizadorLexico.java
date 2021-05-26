@@ -196,6 +196,16 @@ public class AnalizadorLexico {
     }
     
     /**
+     * Método que devuelve la cadena asociada al Analizador Léxico
+     * @return array de enteros que representa la cadena a reconocer por el analizador léxico.
+     */
+    public int[] getCadena() {
+    	
+    	return this.cadena;
+    	
+    }
+    
+    /**
      * Método que proporciona el resto de los tokens generados por la cadena.
      * @return Lista de tokens generados por el analizador para la cadena actual.
      * @see Token
@@ -218,6 +228,26 @@ public class AnalizadorLexico {
         }
  		
  		return tokens;
+ 		
+ 	}
+ 	
+ 	/**
+ 	 * Metodo get que devuelve el autómata del analizador léxico.
+ 	 * @return AutomataFinito es el autómata finito asociado al analizador.
+ 	 */
+ 	public AutomataFinito getAutomata() {
+ 		
+ 		return this.automata;
+ 		
+ 	}
+ 	
+ 	/**
+ 	 * Metodo get que devuelve los tokens del analizado léxico.
+ 	 * @return Map es la estructura donde se almacenan los tokens del analizador.
+ 	 */
+ 	public Map<Integer,String> getTokens() {
+ 		
+ 		return this.tokens;
  		
  	}
     

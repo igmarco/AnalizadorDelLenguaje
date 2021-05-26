@@ -34,6 +34,8 @@ public class DefinirEquivTokensDialogo extends JDialog {
 
 	int NúmeroEstados;
 	int NúmeroFinal = 0;
+	
+	Map<Integer, String> tokens;
 
 //	/**
 //	 * Launch the application.
@@ -54,6 +56,7 @@ public class DefinirEquivTokensDialogo extends JDialog {
 	 * @param equivTokens Diccionario con la correspondencia de estados finales y
 	 *                    tokens. (Nota: Este atributo no sirve para nada.)
 	 * @param ali         Interfaz del analizador léxico que genera el diálogo.
+	 * @param finales representa el array de finales del autómata
 	 */
 	public DefinirEquivTokensDialogo(Map<Integer, String> equivTokens, Analizador ali, boolean[] finales) {
 
@@ -79,6 +82,69 @@ public class DefinirEquivTokensDialogo extends JDialog {
 			for (int i = 0; i < NúmeroEstados; ++i) {
 				if (finales[i]) {
 					dtm.addRow(new Object[] { i + 1, null });
+					++this.NúmeroFinal;
+				}
+			}
+			contentPanel.add(table);
+		}
+		{
+			JPanel buttonPane = new JPanel();
+			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			{
+				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+
+						construirEquivTokens(equivTokens, ali);
+						dispose();
+
+					}
+				});
+				okButton.setActionCommand("OK");
+				buttonPane.add(okButton);
+				getRootPane().setDefaultButton(okButton);
+			}
+		}
+
+		this.pack();
+	}
+	
+	/**
+	 * Create the dialog.
+	 * 
+	 * @param equivTokens Diccionario con la correspondencia de estados finales y
+	 *                    tokens. (Nota: Este atributo no sirve para nada.)
+	 * @param ali         Interfaz del analizador léxico que genera el diálogo.
+	 * @param finales representa el array de finales del autómata
+	 * @param tokens es el map de tokens del analizador a modificar.
+	 */
+	public DefinirEquivTokensDialogo(Map<Integer, String> equivTokens, Analizador ali, boolean[] finales, Map<Integer, String> tokens) {
+
+		setResizable(false);
+
+		this.NúmeroEstados = finales.length;
+		this.tokens = tokens;
+
+		setTitle("Equivalencia de estados finales - tokens");
+		setBounds(100, 100, 339, 422);
+		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setLayout(new FlowLayout());
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		{
+			table = new JTable();
+			table.setFont(new Font("Consolas", Font.PLAIN, 15));
+			table.setBounds(10, 11, 303, 16);
+			DefaultTableModel dtm = new DefaultTableModel(0, 0);
+			String header[] = new String[] { "Estado", "Token" };
+			dtm.setColumnIdentifiers(header);
+			table.setModel(dtm);
+			dtm.addRow(header);
+			for (int i = 0; i < NúmeroEstados; ++i) {
+				if (finales[i]) {
+					dtm.addRow(new Object[] { i + 1, tokens.get(i + 1) });
+					System.out.println(tokens.toString());
 					++this.NúmeroFinal;
 				}
 			}

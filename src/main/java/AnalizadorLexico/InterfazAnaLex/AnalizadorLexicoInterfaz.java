@@ -46,13 +46,14 @@ public class AnalizadorLexicoInterfaz {
 	Map<Integer, String> equivTokens;
 	
 	String cadenaActual;
+	String[] simbolos;
 	
 	boolean automataFinitoInformado;
 	boolean equivTokensInformado;
 	
 	//----------------------------
 	
-	JButton btnNewButton, btnSiguiente, construir;
+	JButton btnNewButton, btnSiguiente, construir, btnModificarAnalizador;
 
 	/**
 	 * Launch the application.
@@ -96,7 +97,7 @@ public class AnalizadorLexicoInterfaz {
 		frmAnalizadorLxico.getContentPane().setBackground(new Color(102, 153, 204));
 		frmAnalizadorLxico.setResizable(false);
 		frmAnalizadorLxico.getContentPane().setForeground(new Color(0, 0, 0));
-		frmAnalizadorLxico.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\pablo\\OneDrive\\Escritorio\\AnalizadorDelLenguaje\\Recursos\\iCono.png"));
+		frmAnalizadorLxico.setIconImage(Toolkit.getDefaultToolkit().getImage("Recursos\\iCono.png"));
 		frmAnalizadorLxico.setTitle("Analizador L\u00E9xico");
 		frmAnalizadorLxico.setBounds(100, 100, 666, 573);
 		frmAnalizadorLxico.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -185,7 +186,15 @@ public class AnalizadorLexicoInterfaz {
 		lblNewLabel_1_1.setBounds(437, 11, 203, 84);
 		frmAnalizadorLxico.getContentPane().add(lblNewLabel_1_1);
 		
-		JButton btnModificarAnalizador = new JButton("Modificar Analizador");
+		btnModificarAnalizador = new JButton("Modificar Analizador");
+		btnModificarAnalizador.setEnabled(false);
+		btnModificarAnalizador.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				clickModificarAnalizador();
+				
+			}
+		});
 		btnModificarAnalizador.setFont(new Font("Consolas", Font.BOLD, 15));
 		btnModificarAnalizador.setBackground(new Color(255, 204, 153));
 		btnModificarAnalizador.setBounds(335, 111, 315, 54);
@@ -208,7 +217,11 @@ public class AnalizadorLexicoInterfaz {
 		
 		try {
 			
-			this.AL.nextToken();
+			if(this.AL.hasMoreTokens()) {
+				this.AL.nextToken();
+			}else {
+				this.btnNewButton.setEnabled(false);
+			}
 			
 		} catch (ExcepcionDeTransicion e) {
 			
@@ -243,10 +256,61 @@ public class AnalizadorLexicoInterfaz {
 		this.AL = al;
 	}
 	
+	/**
+	 * Se activa al hacer click en "Nuevo Analizador". Transita al apartado de creación del analizador haciendo invisible la página principal.
+	 * @see AnaLex.AnalizadorLexico#clickNuevoAnalizador()
+	 */
 	public void clickNuevoAnalizador() {
+		
 		Creación cr = new Creación(this);
 		cr.setVisible(true);
+		
 		this.btnNewButton.setEnabled(true);
 		this.btnSiguiente.setEnabled(true);
+		this.btnModificarAnalizador.setEnabled(true);
+		
+	}
+	
+	/**
+	 * Se activa al hacer click en "Modificar Analizador". Pasa a otra ventana donde se podrá modificar el autómata ya creado.
+	 * @see AnaLex.AnalizadorLexico#clickModificarAnalizador()
+	 */
+	public void clickModificarAnalizador() {
+		
+		AutomataFinito af = this.getAutomata();
+		
+		Analizador an = new Analizador(af.getNumEstados(), this.simbolos, this, false);
+		an.setVisible(true);
+				
+	}
+	
+	/**
+	 * Método que devuelve el autómata asociado al analizador activo
+	 * @return AutomataFinito es el objeto automata.
+	 */
+	public AutomataFinito getAutomata() {
+		
+		return this.AL.getAutomata();
+		
+	}
+	
+	/**
+	 * Método que devuelve el analizado léxico asociado a la interfaz
+	 * @return AnalizadorLexico es el objeto analizador que usa la interfaz.
+	 */
+	public AnalizadorLexico getAnalizador() {
+		
+		return this.AL;
+		
+	}
+	
+	/**
+	 * Establece los simbolos del alfabeto que se están utilizando en el análisis
+	 * @param simbolos es el array de String que contiene el alfabeto
+	 */
+	public void setSimbolos(String[] simbolos) {
+		
+		this.simbolos = simbolos;
+		
 	}
 }
