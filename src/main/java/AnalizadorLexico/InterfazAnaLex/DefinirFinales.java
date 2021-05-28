@@ -37,16 +37,17 @@ public class DefinirFinales extends JFrame {
 	private JTable table;
 	
 	int Estados;
-	String[] Simbolos;
+	int Alfabeto;
 
 	/**
 	 * Create the frame.
+	 * @param nuevo 
 	 */
-	public DefinirFinales(AutomataFinito AF, Analizador ali, int NúmeroEstados, String[] Simbolos) {
+	public DefinirFinales(AutomataFinito AF, Analizador ali, int Estados, int Alfabeto, boolean nuevo) {
 		setResizable(false);
 
-		Estados = NúmeroEstados;
-		this.Simbolos = Simbolos;
+		this.Estados = Estados;
+		this.Alfabeto = Alfabeto;
 
 		setTitle("Matriz de transiciones del analizador l\u00E9xico");
 		setBounds(100, 100, 249, 416);
@@ -63,15 +64,45 @@ public class DefinirFinales extends JFrame {
 			dtm.setColumnIdentifiers(header);
 			table.setModel(dtm);
 			dtm.addRow(header);
-			for (int i = 0; i < NúmeroEstados; ++i) {
-				JComboBox comboBox = new JComboBox();
-				comboBox.addItem("Sí");
-				comboBox.addItem("No");
-				Object[] Aux = new String[Simbolos.length + 1];
-				Aux[0] = (i + 1) + "";
-				for (int j = 1; j < Simbolos.length; ++j) {
-					table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));
-				}
+			for (int i = 0; i < Estados; ++i) {
+				
+				Object[] Aux = new String[Alfabeto + 1];
+				Aux[0] = (i) + "";
+				
+//				if(nuevo) {
+					
+					JComboBox comboBox = new JComboBox();
+					comboBox.addItem("Sí");
+					comboBox.addItem("No");
+					
+					for (int j = 1; j < Alfabeto; ++j) {
+						table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));
+					}
+//				}
+//				else {
+//					
+//					JComboBox comboBoxSi = new JComboBox();
+//					comboBoxSi.addItem("Sí");
+//					comboBoxSi.addItem("No");
+//					comboBoxSi.setSelectedItem(0);
+//					
+//					JComboBox comboBoxNo = new JComboBox();
+//					comboBoxNo.addItem("Sí");
+//					comboBoxNo.addItem("No");
+//					comboBoxNo.setSelectedItem(1);
+//					
+//					for (int j = 1; j < Alfabeto; ++j) {
+//						if(AF.getFinalesBooleanList()[j-1]) {
+//							table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBoxSi));
+//							comboBoxSi.setSelectedItem("Sí");
+//						}
+//						else {
+//							table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBoxNo));
+//							comboBoxNo.setSelectedItem("No");
+//						}
+//					}
+//				}
+				
 				dtm.addRow(Aux);
 			}
 			contentPanel.add(table);

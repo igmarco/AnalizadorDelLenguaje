@@ -58,7 +58,7 @@ public class DefinirEquivTokensDialogo extends JDialog {
 	 * @param ali         Interfaz del analizador léxico que genera el diálogo.
 	 * @param finales representa el array de finales del autómata
 	 */
-	public DefinirEquivTokensDialogo(Map<Integer, String> equivTokens, Analizador ali, boolean[] finales) {
+	public DefinirEquivTokensDialogo(Map<Integer, String> equivTokens, Analizador ali, boolean[] finales, boolean nuevo) {
 
 		setResizable(false);
 
@@ -79,10 +79,21 @@ public class DefinirEquivTokensDialogo extends JDialog {
 			dtm.setColumnIdentifiers(header);
 			table.setModel(dtm);
 			dtm.addRow(header);
-			for (int i = 0; i < NúmeroEstados; ++i) {
-				if (finales[i]) {
-					dtm.addRow(new Object[] { i + 1, null });
-					++this.NúmeroFinal;
+			
+			if(nuevo) {
+				for (int i = 0; i < NúmeroEstados; ++i) {
+					if (finales[i]) {
+						dtm.addRow(new Object[] { i, null });
+						++this.NúmeroFinal;
+					}
+				}
+			}
+			else {
+				for (int i = 0; i < NúmeroEstados; ++i) {
+					if (finales[i]) {
+						dtm.addRow(new Object[] { i, equivTokens.get(i) });
+						++this.NúmeroFinal;
+					}
 				}
 			}
 			contentPanel.add(table);
@@ -143,7 +154,7 @@ public class DefinirEquivTokensDialogo extends JDialog {
 			dtm.addRow(header);
 			for (int i = 0; i < NúmeroEstados; ++i) {
 				if (finales[i]) {
-					dtm.addRow(new Object[] { i + 1, tokens.get(i + 1) });
+					dtm.addRow(new Object[] { i, tokens.get(i) });
 					System.out.println(tokens.toString());
 					++this.NúmeroFinal;
 				}
@@ -187,11 +198,11 @@ public class DefinirEquivTokensDialogo extends JDialog {
 
 		equivTokens = new HashMap<>();
 
-		for (int row = 1; row < this.NúmeroFinal; row++) {
+		for (int row = 1; row < this.NúmeroFinal+1; row++) {
 
 			if (this.table.getModel().getValueAt(row, 0) != null && this.table.getValueAt(row, 1) != null) {
 				String string = (String) this.table.getValueAt(row, 0).toString();
-				Integer result = Integer.parseInt(string) -1;
+				Integer result = Integer.parseInt(string);
 				equivTokens.put(result,(String) this.table.getModel().getValueAt(row, 1));
 
 			}

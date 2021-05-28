@@ -94,5 +94,15 @@ public class AutomataFinitoMatriz extends AutomataFinito{
 		return this.matriz[estado][letra];
 		
 	}
+
+	/**
+    * Método que devuelve el objeto que representa las transiciones del autómata finito.
+    * @return Objeto que representa las transiciones.
+    * @see AutomataFinito#getTransiciones()
+    */
+	public int[][] getTransiciones() {
+		// TODO Auto-generated method stub
+		return this.matriz;
+	}
     
 }

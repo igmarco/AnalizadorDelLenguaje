@@ -22,7 +22,7 @@ public class Analizador extends JFrame {
 	private JPanel contentPane;
 
 	int Estados;
-	String[] Simbolos;
+	int Alfabeto;
 	int[][] matriz;
 	boolean[] finales;
 	AutomataFinito AF;
@@ -36,15 +36,15 @@ public class Analizador extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Analizador(int Estados, String[] Simbolos, AnalizadorLexicoInterfaz ali, boolean nuevo) {
+	public Analizador(int Estados, int Alfabeto, AnalizadorLexicoInterfaz ali, boolean nuevo) {
 		
 		this.ali = ali;
-		AF = new AutomataFinitoMatriz(0, 0);
+		this.AF = new AutomataFinitoMatriz(0, 0);
 		this.Estados = Estados;
-		this.Simbolos = Simbolos;
+		this.Alfabeto = Alfabeto;
 		this.nuevo = nuevo;
 
-		equivTokens = new HashMap<>();
+		this.equivTokens = new HashMap<>();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 460, 146);
@@ -99,6 +99,74 @@ public class Analizador extends JFrame {
 		contentPane.add(btnMatriz);
 	}
 
+	public Analizador(int Estados, int Alfabeto, AnalizadorLexicoInterfaz ali, boolean nuevo,
+			AutomataFinito af, Map<Integer, String> equivTokens) {
+		
+		this.ali = ali;
+		this.AF = af;
+		this.Estados = Estados;
+		this.Alfabeto = Alfabeto;
+		this.nuevo = nuevo;
+		
+		this.finales = af.getFinalesBooleanList();
+		this.matriz = ((AutomataFinitoMatriz) af).getTransiciones();
+
+		this.equivTokens = equivTokens;
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 460, 146);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.LIGHT_GRAY);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JButton btnTokens = new JButton("Indicar Tokens");
+		btnTokens.setFont(new Font("Consolas", Font.BOLD, 11));
+		btnTokens.setForeground(Color.WHITE);
+		btnTokens.setBackground(new Color(102, 153, 204));
+		btnTokens.setEnabled((nuevo ? false : true));
+		btnTokens.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				clickTokenEstado(equivTokens);
+			}
+		});
+		btnTokens.setBounds(301, 32, 133, 54);
+		contentPane.add(btnTokens);
+
+		JButton btnFinales = new JButton("Indicar Finales");
+		btnFinales.setForeground(Color.WHITE);
+		btnFinales.setFont(new Font("Consolas", Font.BOLD, 11));
+		btnFinales.setBackground(new Color(102, 153, 204));
+		btnFinales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				clickFinales();
+				btnTokens.setEnabled(true);
+			}
+		});
+		btnFinales.setEnabled((nuevo ? false : true));
+		btnFinales.setBounds(155, 32, 133, 54);
+		contentPane.add(btnFinales);
+
+		JButton btnMatriz = new JButton("Construir Matriz");
+		btnMatriz.setFont(new Font("Consolas", Font.BOLD, 11));
+		btnMatriz.setForeground(Color.WHITE);
+		btnMatriz.setBackground(new Color(102, 153, 204));
+		btnMatriz.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				clickConstruirMatriz();
+				btnFinales.setEnabled(true);
+				
+			}
+		});
+		btnMatriz.setBounds(12, 32, 133, 54);
+		contentPane.add(btnMatriz);
+		
+	}
+
 	/**
 	 * Se activa al hacer click en "Indicar Tokens". Abre una ventana de diálogo en
 	 * la que es posible introducir la correspondencia entre estados finales y
@@ -114,11 +182,7 @@ public class Analizador extends JFrame {
 		
 		DefinirEquivTokensDialogo frame;
 		
-		if(nuevo)
-			frame = new DefinirEquivTokensDialogo(equivTokens, this, this.finales);
-		else
-			frame = new DefinirEquivTokensDialogo(equivTokens, this, this.ali.getAutomata().getFinalesBooleanList(), this.ali.getAnalizador().getTokens());
-			
+		frame = new DefinirEquivTokensDialogo(equivTokens, this, this.finales, this.nuevo);
 			
 		frame.setVisible(true);
 		frame.setModal(true);
@@ -132,7 +196,7 @@ public class Analizador extends JFrame {
 	
 	private void clickConstruirMatriz() {
 		
-		ConstruirMatriz cm = new ConstruirMatriz(AF,this, Estados, Simbolos);
+		ConstruirMatriz cm = new ConstruirMatriz(AF,this, Estados, Alfabeto, this.nuevo);
 		cm.setVisible(true);
 		
 		
@@ -140,7 +204,7 @@ public class Analizador extends JFrame {
 	
 	private void clickFinales() {
 		
-		DefinirFinales cm = new DefinirFinales(AF,this, Estados, Simbolos);
+		DefinirFinales cm = new DefinirFinales(AF,this, Estados, Alfabeto, this.nuevo);
 		cm.setVisible(true);
 		
 		
@@ -155,8 +219,9 @@ public class Analizador extends JFrame {
 	 */
 	public void guardarEquivTokens(Map<Integer, String> equivTokens) {
 
-		this.equivTokens = equivTokens;
+//		this.equivTokens = equivTokens;
 		contruirAnalizador();
+		ali.DefinirEquivTokens(equivTokens);
 		ali.DefinirAnalizador(AL);
 		this.dispose();
 
@@ -184,7 +249,7 @@ public class Analizador extends JFrame {
 	
 	public void contruirAutómata() {
 		
-		this.AF = new AutomataFinitoMatriz(this.Estados, this.Simbolos.length, this.finales, this.matriz);
+		this.AF = new AutomataFinitoMatriz(this.Estados, this.Alfabeto, this.finales, this.matriz);
 	}
 	
 	/**

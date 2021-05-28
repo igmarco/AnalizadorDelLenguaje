@@ -12,10 +12,10 @@ import java.util.Map;
 * @see <a href="https://aps.unirioja.es/GuiasDocentes/servlet/agetguiahtml?2020-21,801G,445">Guía de la Asignatura: Procesadores de Lenguajes.</a> 
 * @see AnalizadorLexico
 */
-public class Main2 {
+public class Main2_Pr4 {
     
 	/**
-    * Método main de la clase Main2.
+    * Método main de la clase Main2_Pr4.
     * Inicializa el analizador correspondiente a la práctica 4 y realiza el análisis de la cadena 'acccbbaaba'.
     * @param args Argumentos del main. En este caso, ninguna entrada.
     */
@@ -25,7 +25,7 @@ public class Main2 {
         int NumEstados=9;
     	
         int matriz[][] = 	{{1,2,3}, {4,5,-1}, {-1,5,-1}, {-1,-1,3}, {6,7,-1}, {-1,5,-1}, {6,5,-1}, {-1,8,-1}, {-1,5,-1}};
-        boolean finales[] = {false,	   true,	 true,	    true,	   false,	 true,	    false,    true,      false};
+        boolean finales[] = {false,	   true,	 true,	    true,	   false,	 true,	    false,    true,      true};
         
         String palabra = "acccbbaaba";
         

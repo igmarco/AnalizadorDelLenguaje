@@ -33,7 +33,7 @@ public class ConstruirMatriz extends JFrame {
 	
 	
 	int Estados;
-	String[] Simbolos;
+	int Alfabeto;
 
 //	/**
 //	 * Launch the application.
@@ -52,12 +52,13 @@ public class ConstruirMatriz extends JFrame {
 	 * Create the dialog.
 	 * @param AF Autómata finito. (Nota: Este atributo no sirve para nada.)
 	 * @param ali Interfaz del analizador léxico que genera el diálogo.
+	 * @param nuevo 
 	 */
-	public ConstruirMatriz(AutomataFinito AF, Analizador ali, int NúmeroEstados, String[] Simbolos ) {
+	public ConstruirMatriz(AutomataFinito AF, Analizador ali, int NúmeroEstados, int Alfabeto, boolean nuevo) {
 		setResizable(false);
 		
 		Estados = NúmeroEstados;
-		this.Simbolos = Simbolos;
+		this.Alfabeto = Alfabeto;
 		
 		setTitle("Matriz de transiciones del analizador l\u00E9xico");
 		setBounds(100, 100, 249, 416);
@@ -70,23 +71,48 @@ public class ConstruirMatriz extends JFrame {
 			table.setFont(new Font("Consolas", Font.PLAIN, 15));
 			table.setBounds(10, 11, 303, 16);
 			DefaultTableModel dtm = new DefaultTableModel(0, 0);
-			String header[] = new String[Simbolos.length+1];
+			
+			String header[] = new String[Alfabeto+1];
 			header[0] =  "Estado";
-			for ( int i = 1; i <= Simbolos.length; ++i) {
-				header[i] = Simbolos[(i-1)];
+			
+			for ( int i = 0; i < Alfabeto; ++i) {
+				
+				header[i+1] = "" + ((char) (((int) 'a') + i));
+				
 			}
+			
 			dtm.setColumnIdentifiers(header);
 			table.setModel(dtm);
 			dtm.addRow(header);
+			
 			for ( int i = 0; i < NúmeroEstados; ++i) {
-				Object[] Aux = new String[Simbolos.length+1];
-				Aux[0] = (i+1)+""; 
-				for ( int j = 1; j < Simbolos.length; ++j) {
-					Aux[j] = null;
+				
+				Object[] Aux = new String[Alfabeto+1];
+				Aux[0] = (i)+""; 
+				
+				if(nuevo) {
+					for ( int j = 1; j < Alfabeto+1; ++j) {
+						
+						Aux[j] = null;
+						
+					}
 				}
+				else {
+					int[][] matrix = ((AutomataFinitoMatriz) AF).getTransiciones();
+					
+					for ( int j = 1; j < Alfabeto+1; ++j) {
+						
+						Aux[j] = "" + matrix[i][j-1];
+						
+					}
+				}
+				
 				dtm.addRow(Aux);
+				
 			}
+			
 			contentPanel.add(table);
+			
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -118,11 +144,11 @@ public class ConstruirMatriz extends JFrame {
     */
 	private void construirAF(AutomataFinito AF, Analizador ali) {
 		
-		int[][] matriz = new int[this.Estados][this.Simbolos.length];
+		int[][] matriz = new int[this.Estados][this.Alfabeto];
 		
 		for(int row = 1; row < this.Estados+1; row++) {
 			
-			for(int col = 1; col < this.Simbolos.length+1; col++) {
+			for(int col = 1; col < this.Alfabeto+1; col++) {
 				
 				matriz[row-1][col-1] = this.table.getModel().getValueAt(row, col) == null ? -1 : Integer.parseInt((String) this.table.getModel().getValueAt(row, col));
 				

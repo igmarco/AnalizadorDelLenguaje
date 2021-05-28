@@ -21,9 +21,9 @@ public class Creación extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField tfEstados;
-	private JTextField tfSimbolos;
+	private JTextField tfAlfabeto;
 	private int Estados;
-	private String[] Simbolos;
+	private int Alfabeto;
 
 	/**
 	 * Create the frame.
@@ -33,7 +33,7 @@ public class Creación extends JFrame {
 		setBackground(Color.WHITE);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 428, 326);
+		setBounds(100, 100, 428, 376);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(211, 211, 211));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -51,21 +51,16 @@ public class Creación extends JFrame {
 		contentPane.add(tfEstados);
 		tfEstados.setColumns(10);
 		
-		JLabel lblIndiqueQue = new JLabel("Indique los simbolos del alfabeto:");
+		JLabel lblIndiqueQue = new JLabel("¿Cuántos símbolos componen su alfabeto?:");
 		lblIndiqueQue.setFont(new Font("Consolas", Font.PLAIN, 18));
 		lblIndiqueQue.setBounds(21, 134, 424, 63);
 		contentPane.add(lblIndiqueQue);
 		
-		tfSimbolos = new JTextField();
-		tfSimbolos.setFont(new Font("Consolas", Font.PLAIN, 15));
-		tfSimbolos.setBounds(21, 199, 374, 38);
-		contentPane.add(tfSimbolos);
-		tfSimbolos.setColumns(10);
-		
-		JLabel lblNewLabel_1 = new JLabel("Cada uno separado por comas.");
-		lblNewLabel_1.setFont(new Font("Consolas", Font.PLAIN, 11));
-		lblNewLabel_1.setBounds(21, 175, 339, 14);
-		contentPane.add(lblNewLabel_1);
+		tfAlfabeto = new JTextField();
+		tfAlfabeto.setFont(new Font("Consolas", Font.PLAIN, 15));
+		tfAlfabeto.setBounds(21, 199, 374, 38);
+		contentPane.add(tfAlfabeto);
+		tfAlfabeto.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Siguiente");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -75,23 +70,20 @@ public class Creación extends JFrame {
 		btnNewButton.setForeground(new Color(255, 255, 255));
 		btnNewButton.setFont(new Font("Consolas", Font.PLAIN, 15));
 		btnNewButton.setBackground(new Color(102, 153, 204));
-		btnNewButton.setBounds(100, 249, 214, 37);
+		btnNewButton.setBounds(100, 270, 214, 45);
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(tfSimbolos.getText().isEmpty() && tfEstados.getText().isEmpty()) {
+				if(tfAlfabeto.getText().isEmpty() && tfEstados.getText().isEmpty()) {
 					showMessageDialog(null, "Rellene los campos");
 				}else {
 					try {
 						
 						Estados = Integer.parseInt(tfEstados.getText());
 						
-						Simbolos = tfSimbolos.getText().split(",");
-						Arrays.sort(Simbolos);
+						Alfabeto = Integer.parseInt(tfAlfabeto.getText());
 						
-						ali.setSimbolos(Simbolos);
-						
-						Analizador an = new Analizador(Estados, Simbolos, ali, true);
+						Analizador an = new Analizador(Estados, Alfabeto, ali, true);
 						dispose();
 						an.setVisible(true);
 					}catch(NumberFormatException ex) {

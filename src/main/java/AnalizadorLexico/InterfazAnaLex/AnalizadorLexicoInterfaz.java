@@ -46,7 +46,6 @@ public class AnalizadorLexicoInterfaz {
 	Map<Integer, String> equivTokens;
 	
 	String cadenaActual;
-	String[] simbolos;
 	
 	boolean automataFinitoInformado;
 	boolean equivTokensInformado;
@@ -256,6 +255,10 @@ public class AnalizadorLexicoInterfaz {
 		this.AL = al;
 	}
 	
+	public void DefinirEquivTokens(Map<Integer, String> equivTokens) {
+		this.equivTokens = equivTokens;
+	}
+	
 	/**
 	 * Se activa al hacer click en "Nuevo Analizador". Transita al apartado de creación del analizador haciendo invisible la página principal.
 	 * @see AnaLex.AnalizadorLexico#clickNuevoAnalizador()
@@ -279,7 +282,7 @@ public class AnalizadorLexicoInterfaz {
 		
 		AutomataFinito af = this.getAutomata();
 		
-		Analizador an = new Analizador(af.getNumEstados(), this.simbolos, this, false);
+		Analizador an = new Analizador(af.getNumEstados(), af.getTamAlfabeto(), this, false, af, equivTokens);
 		an.setVisible(true);
 				
 	}
@@ -301,16 +304,6 @@ public class AnalizadorLexicoInterfaz {
 	public AnalizadorLexico getAnalizador() {
 		
 		return this.AL;
-		
-	}
-	
-	/**
-	 * Establece los simbolos del alfabeto que se están utilizando en el análisis
-	 * @param simbolos es el array de String que contiene el alfabeto
-	 */
-	public void setSimbolos(String[] simbolos) {
-		
-		this.simbolos = simbolos;
 		
 	}
 }

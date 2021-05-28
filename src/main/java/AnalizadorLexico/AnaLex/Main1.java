@@ -15,9 +15,9 @@ import java.util.Map;
 public class Main1 {
 
 	/**
-	    * Método main de la clase Main1.
-	    * @param args Argumentos del main. En este caso, ninguna entrada.
-	    */
+    * Método main de la clase Main1.
+    * @param args Argumentos del main. En este caso, ninguna entrada.
+    */
 	public static void main(String[] args) {
 		
 		int tamAlfabeto = 2;
